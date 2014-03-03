@@ -1,0 +1,10 @@
+{
+  "name": "Chrome Extension Manifest Updater",
+  "version": "0.1",
+  "description": "A gulp plugin that updates your Chrome extension manifest file based on your package.json settings.",
+  "main": "chromex.js",
+  "devDependencies": {
+    "gulp-zip": "~0.1.2"
+  },
+  "keywords": ["gulpplugin"]
+}
