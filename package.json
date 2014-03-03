@@ -6,5 +6,5 @@
   "devDependencies": {
     "gulp-zip": "~0.1.2"
   },
-  "keywords": ["gulpplugin", "chrome", "extension" "build"]
+  "keywords": ["gulpplugin", "chrome", "extension", "build"]
 }
