@@ -1,6 +1,6 @@
 {
   "name": "gulp-chrome-extension-build",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "A gulp plugin that bundles and updates your Chrome extension based on your package.json settings.",
   "main": "chromex.js",
   "devDependencies": {
