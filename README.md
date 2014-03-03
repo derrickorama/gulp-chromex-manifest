@@ -1,6 +1,6 @@
 Note: Just whipped up this plugin for a project I'm working on. Getting it out there/saving it somewhere.
 
-# [gulp](https://github.com/wearefractal/gulp)-chromex-manifest
+# [gulp](https://github.com/wearefractal/gulp)-chrome-extension-build
 
 > Bundle your Chrome extension for the [Chrome Web Store](https://chrome.google.com/webstore)
 
@@ -15,7 +15,7 @@ Note: Just whipped up this plugin for a project I'm working on. Getting it out t
 Install with npm from [GitHub](https://github.com/derrickorama/gulp-chromex-manifest)
 
 ```
-npm install --save-dev https://github.com/derrickorama/gulp-chromex-manifest.git
+npm install --save-dev git+https://github.com/derrickorama/gulp-chrome-extension-build.git
 ```
 
 
