@@ -25,10 +25,10 @@ Note: This expects your package.json to be in the same directory as your gulpfil
 
 ```js
 var gulp = require('gulp');
-var chromexMan = require('chromex-manifest');
+var chromexBuild = require('gulp-chrome-extension-build');
 
 gulp.task('default', function() {
     gulp.src('manifest.json')
-        .pipe(chromexMan);
+        .pipe(chromexBuild);
 });
 ```
