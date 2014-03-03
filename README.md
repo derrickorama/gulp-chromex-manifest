@@ -1,13 +1,13 @@
 Note: Just whipped up this plugin for a project I'm working on. Getting it out there/saving it somewhere.
 
-Reasons to use this plugin:
-
-* Copies the name, version, and description from your package.json file over to your manifest.json file (keeps them up-to-date)
-* Zips up and excludes common excludes
-
 # [gulp](https://github.com/wearefractal/gulp)-chromex-manifest
 
 > Bundle your Chrome extension for the [Chrome Web Store](https://chrome.google.com/webstore)
+
+## What this does
+
+* Copies the name, version, and description from your package.json file over to your manifest.json file (keeps them up-to-date)
+* Zips up and excludes common excludes
 
 
 ## Install
