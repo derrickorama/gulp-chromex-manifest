@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A gulp plugin that bundles and updates your Chrome extension based on your package.json settings.",
   "main": "chromex.js",
-  "devDependencies": {
+  "dependencies": {
     "gulp-zip": "~0.1.2",
     "through2": "~0.4.1"
   },
