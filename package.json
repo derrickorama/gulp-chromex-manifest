@@ -4,7 +4,13 @@
   "description": "A gulp plugin that bundles and updates your Chrome extension based on your package.json settings.",
   "main": "chromex.js",
   "devDependencies": {
-    "gulp-zip": "~0.1.2"
+    "gulp-zip": "~0.1.2",
+    "through2": "~0.4.1"
   },
-  "keywords": ["gulpplugin", "chrome", "extension", "build"]
+  "keywords": [
+    "gulpplugin",
+    "chrome",
+    "extension",
+    "build"
+  ]
 }
