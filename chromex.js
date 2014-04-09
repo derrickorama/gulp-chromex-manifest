@@ -1,43 +1,72 @@
+var Buffer = require('buffer').Buffer;
 var fs = require('fs');
 var path = require('path');
-var gulp = require('gulp');
+var gutil = require('gulp-util');
 var through = require('through2');
-var zip = require('gulp-zip');
 
-var chromexStream = through.obj(function (manifestFile, enc, finished) {
-	var manifestJSON = JSON.parse(manifestFile.contents.toString());
+var chromexStream = function () {
+	'use strict';
 
-	if (!manifestFile.isBuffer()) {
-		this.push(manifestFile);
-		return callback();
+	var PLUGIN_NAME = require('./package.json').name;
+	var manifestFound = false;
+	var pkg;
+	var pkgPath;
+	var stream;
+
+	// Check for package.json file
+	pkgPath = path.join(process.cwd(), 'package.json');
+	if (fs.existsSync(pkgPath) === false) {
+		throw new gutil.PluginError(PLUGIN_NAME, 'Please createa a your package.json file in root level of your extension.');
 	}
 
-	// Load package.json
-	gulp.src('package.json')
-		.pipe(through.obj(function (packageFile, enc, callback) {
-			var packageJSON = JSON.parse(packageFile.contents.toString());
-			
-			// Update manifest.json with name, version, and description
-			manifestJSON.name = packageJSON.name;
-			manifestJSON.version = packageJSON.version;
-			manifestJSON.description = packageJSON.description;
+	// Load extension's package.json file
+	pkg = require(pkgPath);
 
-			this.push(JSON.stringify(manifestJSON, null, 2));
+	// Create stream for piping
+	stream = through.obj(function (file, enc, finish) {
+		var self = this;
 
-			callback();
-		}))
-		.pipe(through.obj(function (manifestContents, enc, callback) {
-			var stream = fs.createWriteStream(manifestFile.path);
-			stream.end(manifestContents);
-			stream.on('finish', function () {
-				var root = path.dirname(manifestFile.path);
-				var dirBaseName = path.basename(root);
+		if (file.isNull()) {
+			return finish();
+		}
 
-				gulp.src(['**/**', '!' + dirBaseName + '.zip', '!node_modules/**/**', '!.git*', '!gulpfile.js', '!package.json'])
-					.pipe(zip(dirBaseName + '.zip'))
-					.pipe(gulp.dest(root));
+		// Update manifest file
+		if (file.path.indexOf('manifest.json', file.path.length - 13) > 1) {
+			manifestFound = true;
+			updateManifest(file, function (file) {
+				self.push(file);
+				finish();
 			});
-		}));
-});
+			return;
+		}
+
+		this.push(file);
+
+		return finish();
+	}).on('finish', function () {
+		// If manifest is not found, throw an error
+		if (manifestFound !== true) {
+			throw new gutil.PluginError(PLUGIN_NAME, 'Please include your manifest.json file in the gulp.src() blob.');
+		}
+	});
+
+	function updateManifest(file, finish) {
+		var manifest = JSON.parse(file.contents);
+
+         // Update manifest.json with name, version, and description
+         manifest.name = pkg.name;
+         manifest.version = pkg.version;
+         manifest.description = pkg.description;
+
+         file.contents = new Buffer(JSON.stringify(manifest));
+
+         // Update actual manifest file
+         fs.writeFile(file.path, file.contents, function () {
+         	finish(file);
+         });
+	}
+
+	return stream;
+};
 
 module.exports = chromexStream;

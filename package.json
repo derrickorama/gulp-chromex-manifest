@@ -1,10 +1,10 @@
 {
-  "name": "gulp-chrome-extension-build",
-  "version": "0.1.0",
-  "description": "A gulp plugin that bundles and updates your Chrome extension based on your package.json settings.",
+  "name": "gulp-chromex-manifest",
+  "version": "0.2.0",
+  "description": "A gulp plugin that updates your Chrome extension based on your package.json settings.",
   "main": "chromex.js",
   "dependencies": {
-    "gulp-zip": "~0.1.2",
+    "gulp-util": "^2.2.14",
     "through2": "~0.4.1"
   },
   "keywords": [
@@ -12,5 +12,10 @@
     "chrome",
     "extension",
     "build"
-  ]
+  ],
+  "devDependencies": {
+    "jasmine-node": "^1.14.3",
+    "gulp-zip": "^0.3.4",
+    "unzip": "^0.1.9"
+  }
 }

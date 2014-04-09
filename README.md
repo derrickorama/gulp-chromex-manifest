@@ -1,13 +1,10 @@
-Note: Just whipped up this plugin for a project I'm working on. Getting it out there/saving it somewhere.
+# [gulp](https://github.com/wearefractal/gulp)-chromex-manifest
 
-# [gulp](https://github.com/wearefractal/gulp)-chrome-extension-build
-
-> Bundle your Chrome extension for the [Chrome Web Store](https://chrome.google.com/webstore)
+> Updates your Chrome extension manifest with values in package.json - also works with [gulp-zip](https://github.com/sindresorhus/gulp-zip)
 
 ## What this does
 
 * Copies the name, version, and description from your package.json file over to your manifest.json file (keeps them up-to-date)
-* Zips up and excludes common excludes
 
 
 ## Install
@@ -15,20 +12,24 @@ Note: Just whipped up this plugin for a project I'm working on. Getting it out t
 Install with npm from [GitHub](https://github.com/derrickorama/gulp-chromex-manifest)
 
 ```
-npm install --save-dev git+https://github.com/derrickorama/gulp-chrome-extension-build.git
+npm install --save-dev git+https://github.com/derrickorama/gulp-chromex-manifest.git
 ```
 
 
-## Example
+## Example usage with [gulp-zip](https://github.com/sindresorhus/gulp-zip)
 
-Note: This expects your package.json to be in the same directory as your gulpfile.
+This snippet will update your manifest file and then zip all of the files you included with gulp.src().
+
+Note: You must run chromexMan() before you zip your files or your files will not include the updated manifest.
 
 ```js
 var gulp = require('gulp');
-var chromexBuild = require('gulp-chrome-extension-build');
+var chromexMan = require('gulp-chromex-manifest');
 
 gulp.task('default', function() {
-    gulp.src('manifest.json')
-        .pipe(chromexBuild);
+    gulp.src(['manifest.json', 'js/**/*.js', 'css/**/*.css'])
+        .pipe(chromexMan())
+        .pipe(zip(path.basename(__dirname) + '.zip'))
+        .pipe(gulp.dest(__dirname));
 });
 ```
