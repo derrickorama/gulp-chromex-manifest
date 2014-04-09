@@ -27,7 +27,7 @@ var gulp = require('gulp');
 var chromexMan = require('gulp-chromex-manifest');
 
 gulp.task('default', function() {
-    gulp.src(['manifest.json', 'js/**/*.js', 'css/**/*.css'])
+    gulp.src(['**/*', '!.git/**/*', '!node_modules/**/*', '!gulpfile.js', '!package.json'])
         .pipe(chromexMan())
         .pipe(zip(path.basename(__dirname) + '.zip'))
         .pipe(gulp.dest(__dirname));
