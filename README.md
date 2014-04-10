@@ -27,6 +27,7 @@ Note: You must run chromexMan() before you zip your files or your files will not
 var path = require('path');
 var gulp = require('gulp');
 var chromexMan = require('gulp-chromex-manifest');
+var zip = require('gulp-zip');
 
 gulp.task('default', function() {
     gulp.src(['**/*', '!.git/**/*', '!node_modules/**/*', '!gulpfile.js', '!package.json'])
