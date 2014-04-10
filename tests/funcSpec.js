@@ -103,6 +103,15 @@ describe('manifest update', function () {
         stream.end();
     });
 
+    it('prettifies the manifest JSON', function (done) {
+        stream.write(manifest);
+        stream.on('data', function (data) {
+            expect(data.contents.toString()).toBe('{\n' + '    "name": "Extension Name",\n' + '    "version": "1.0.0",\n' + '    "description": "A description."\n' + '}');
+            done();
+        });
+        stream.end();
+    });
+
 });
 
 describe('gulp-zip compatibility', function () {
@@ -124,6 +133,7 @@ describe('gulp-zip compatibility', function () {
         if (fs.existsSync(zipFile)) {
             fs.unlinkSync(zipFile);
         }
+        fs.writeFileSync(path.join(__dirname, 'fixtures', 'zip', 'manifest.json'), '{}');
     });
 
     it('zips files passed from gulp-chromex to to gulp-zip', function (done) {

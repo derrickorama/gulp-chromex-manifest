@@ -58,7 +58,7 @@ var chromexStream = function () {
          manifest.version = pkg.version;
          manifest.description = pkg.description;
 
-         file.contents = new Buffer(JSON.stringify(manifest));
+         file.contents = new Buffer(JSON.stringify(manifest, undefined, 4));
 
          // Update actual manifest file
          fs.writeFile(file.path, file.contents, function () {
