@@ -43,9 +43,18 @@ describe('manifest update', function () {
     var manifest;
     var originalCWD;
     var otherFile;
+    var pkgPath;
     var stream;
 
     beforeEach(function () {
+        pkgPath = path.join(__dirname, 'fixtures', 'valid-package', 'package.json');
+
+        fs.writeFileSync(pkgPath, JSON.stringify({
+            name: 'extension-name',
+            version: '1.0.0',
+            description: 'A description.'
+        }));
+
         // Clear out manifest
         fs.writeFileSync(path.join(__dirname, 'fixtures', 'valid-package', 'manifest.json'), '{}');
 
@@ -65,28 +74,32 @@ describe('manifest update', function () {
         // Save original CWD and set new one
         originalCWD = process.cwd();
         process.chdir(path.join(__dirname, 'fixtures/valid-package'));
-
-        // Create/write to stream
-        stream = chromexMan();
-        stream.write(otherFile);
     });
 
     afterEach(function () {
         fs.writeFileSync(path.join(__dirname, 'fixtures', 'valid-package', 'manifest.json'), '{}');
+        fs.writeFileSync(pkgPath, '{}');
         process.chdir(originalCWD);
     });
 
-    it('updates the name property', function (done) {
+    function createStream() {
+        // Create/write to stream
+        stream = chromexMan();
+        stream.write(otherFile);
         stream.write(manifest);
+    }
+
+    it('updates the name property', function (done) {
+        createStream();
         stream.on('data', function (data) {
-            expect(JSON.parse(data.contents).name).toBe('Extension Name');
+            expect(JSON.parse(data.contents).name).toBe('extension-name');
             done();
         });
         stream.end();
     });
 
     it('updates the version property', function (done) {
-        stream.write(manifest);
+        createStream();
         stream.on('data', function (data) {
             expect(JSON.parse(data.contents).version).toBe('1.0.0');
             done();
@@ -95,7 +108,7 @@ describe('manifest update', function () {
     });
 
     it('updates the description property', function (done) {
-        stream.write(manifest);
+        createStream();
         stream.on('data', function (data) {
             expect(JSON.parse(data.contents).description).toBe('A description.');
             done();
@@ -104,9 +117,24 @@ describe('manifest update', function () {
     });
 
     it('prettifies the manifest JSON', function (done) {
-        stream.write(manifest);
+        createStream();
         stream.on('data', function (data) {
-            expect(data.contents.toString()).toBe('{\n' + '    "name": "Extension Name",\n' + '    "version": "1.0.0",\n' + '    "description": "A description."\n' + '}');
+            expect(data.contents.toString()).toBe('{\n' + '    "name": "extension-name",\n' + '    "version": "1.0.0",\n' + '    "description": "A description."\n' + '}');
+            done();
+        });
+        stream.end();
+    });
+
+    it('uses the "title" property for the manifest "name" if available', function (done) {
+        fs.writeFileSync(pkgPath, JSON.stringify({
+            name: 'extension-name',
+            title: 'Extension Name',
+            version: '1.0.0',
+            description: 'A description.'
+        }));
+        createStream();
+        stream.on('data', function (data) {
+            expect(JSON.parse(data.contents).name).toBe('Extension Name');
             done();
         });
         stream.end();
