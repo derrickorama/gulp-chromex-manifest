@@ -5,6 +5,7 @@
 ## What this does
 
 * Copies the name, version, and description from your package.json file over to your manifest.json file (keeps them up-to-date)
+* Will use the "title" property of your package.json for the manifest "name" property if available
 
 
 ## Install
