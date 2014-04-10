@@ -24,6 +24,7 @@ This snippet will update your manifest file and then zip all of the files you in
 Note: You must run chromexMan() before you zip your files or your files will not include the updated manifest.
 
 ```js
+var path = require('path');
 var gulp = require('gulp');
 var chromexMan = require('gulp-chromex-manifest');
 
